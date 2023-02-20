@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <style>
+
+            .il-label
+            {
+                margin: 0px;
+            }
+
+            input
+            {
+                width: 100%;
+            }
+
+            .set
+            {
+                margin-top: 15px;
+                display: inline-block;
+                width: 100%;
+                height: 30px;
+            }
+        </style>
+
+        <script>
+
+            function set_rgb()
+            {
+                var r = document.getElementById("r").value;
+                var g = document.getElementById("g").value;
+                var b = document.getElementById("b").value;
+
+                // Get headings
+                var h0 = document.getElementById("h0").value;
+                var h1 = document.getElementById("h1").value;
+
+
+
+                // Make the POST request
+                var base_url = window.location.origin
+                var req = new XMLHttpRequest()
+                req.open("POST", base_url)
+                req.setRequestHeader("Content-Type", "application/json")
+
+                //Set data
+                if (h0 == "" || h1 == "")
+                {
+                    var data = '{"mode": "rgb", "r": ' + r + ', "g": ' + g + ', "b": ' + b + '}'
+                }
+                else
+                {
+                    var data = '{"mode": "rgb", "r": ' + r + ', "g": ' + g + ', "b": ' + b + ', "h0": ' + h0 + ', "h1": ' + h1 + "}"
+                }
+            
+                req.send(data)
+            }
+
+            function set_twinkle()
+            {
+                var brightness_step = parseFloat(document.getElementById("brightness_step").value)
+                var frames_at_peak = parseInt(document.getElementById("frames_at_peak").value)
+                var max_brightness = parseFloat(document.getElementById("max_brightness").value)
+                var max_twinkle_count = parseInt(document.getElementById("max_twinkle_count").value)
+                var twinkle_chance = parseFloat(document.getElementById("twinkle_chance").value)
+                var sleep_between_frames = parseFloat(document.getElementById("sleep_between_frames").value)
+
+                // Make the POST request
+                var base_url = window.location.origin
+                var req = new XMLHttpRequest()
+                req.open("POST", base_url)
+                req.setRequestHeader("Content-Type", "application/json")
+                var data = {};
+                data["mode"] = "twinkle";
+                data["brightness_step"] = brightness_step;
+                data["frames_at_peak"] = frames_at_peak;
+                data["max_brightness"] = max_brightness;
+                data["max_twinkle_count"] = max_twinkle_count;
+                data["twinkle_chance"] = twinkle_chance;
+                data["sleep_between_frames"] = sleep_between_frames;
+                req.send(JSON.stringify(data))
+            }
+
+        </script>
+
+    </head>
+    <body>
+
+        <!--RGB-->
+        <p class="il-label">R</p>
+        <input id="r" type="number" value="1">
+        <br>
+        <p class="il-label">G</p>
+        <input id="g" type="number" value="1">
+        <br>
+        <p class="il-label">B</p>
+        <input id="b" type="number" value="1">
+        <p class="il-label">Heading Start</p>
+        <input id="h0" type="number" value="">
+        <p class="il-label">Heading Stop</p>
+        <input id="h1" type="number" value="">
+        <br>
+        <button onclick="set_rgb()" class="set">set RGB</button>
+
+
+
+        <!--Twinkle-->
+        <p class="il-label" style="margin-top: 50px;">Brightness Step</p>
+        <input id="brightness_step" type="number" step="0.01" value="0.01">
+        <p class="il-label">Frames at Peak</p>
+        <input id="frames_at_peak" type="number" value="6">
+        <p class="il-label">Max Brightness</p>
+        <input id="max_brightness" type="number" step="0.01" value="0.25">
+        <p class="il-label">Max Twinkle Count</p>
+        <input id="max_twinkle_count" type="number" value="9999">
+        <p class="il-label">Twinkle Chance</p>
+        <input id="twinkle_chance" type="number" step="0.01" value="0.0001">
+        <p class="il-label">Sleep Between Frames (seconds)</p>
+        <input id="sleep_between_frames" type="number" step="0.01" value="0.05">
+        <button onclick="set_twinkle()" class="set">set twinkle</button>
+        
+
+
+    </body>
+</html>
